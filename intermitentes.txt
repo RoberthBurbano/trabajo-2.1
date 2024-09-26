@@ -1,0 +1,81 @@
+#define LED1_RED 5
+#define LED1_yellow 6
+#define LED1_GREEN 7
+#define LED2_RED 8
+#define LED2_yellow 9
+#define LED2_GREEN 10
+#define LED3_RED 11
+#define LED3_yellow 12
+#define LED3_GREEN 13
+#define SWITCH_PIN 2 // Pin del interruptor
+
+void setup() {
+  pinMode(LED1_RED, OUTPUT);
+  pinMode(LED1_yellow, OUTPUT);
+  pinMode(LED1_GREEN, OUTPUT);
+  pinMode(LED2_RED, OUTPUT);
+  pinMode(LED2_yellow, OUTPUT);
+  pinMode(LED2_GREEN, OUTPUT);
+  pinMode(LED3_RED, OUTPUT);
+  pinMode(LED3_yellow, OUTPUT);
+  pinMode(LED3_GREEN, OUTPUT);
+  pinMode(SWITCH_PIN, INPUT_PULLUP);
+  Serial.begin(9600); 
+}
+void led1_colors(int r, int g, int b) {
+  analogWrite(LED1_RED, r);
+  analogWrite(LED1_yellow, g);
+  analogWrite(LED1_GREEN, b);
+}
+
+void led2_colors(int r, int g, int b) {
+  analogWrite(LED2_RED, r);
+  analogWrite(LED2_yellow, g);
+  analogWrite(LED2_GREEN, b);
+}
+​
+void led3_colors(int r, int g, int b) {
+  analogWrite(LED3_RED, r);
+  analogWrite(LED3_yellow, g);
+  analogWrite(LED3_GREEN, b);
+}
+
+void blinkYellow() {
+ 
+  led1_colors(255, 0 , 255);
+  led2_colors(255, 0 , 255);
+  led3_colors(255, 0 , 255);
+  delay(500);
+
+  led1_colors(0, 0, 0);
+  led2_colors(0, 0, 0);
+  led3_colors(0, 0, 0);
+  delay(500);
+}
+
+void loop() {
+  int switchState = digitalRead(SWITCH_PIN);
+  if (switchState == LOW) {
+    led1_colors(0, 0, 255);  // Semáforo 1 en verde
+    led2_colors(255, 0, 0);  // Semáforo 2 en rojo
+    led3_colors(255, 0, 0);  // Semáforo 3 en rojo
+    Serial.println("Semáforo 1: Verde | Semáforo 2: Rojo | Semáforo 3: Rojo");
+    delay(2000);
+
+    led1_colors(255 , 0 , 0);  // Semáforo 1 en rojo
+    led2_colors( 0  , 0 , 255);  // Semáforo 2 en verde
+    led3_colors(255 , 0 , 0);  // Semáforo 3 en rojo
+    Serial.println("Semáforo 2: Rojo | Semáforo 2: Verde | Semáforo 3: Rojo");
+    delay(2000);
+
+    led1_colors(255, 0, 0);  // Semáforo 1 en rojo
+    led2_colors(255, 0, 0);  // Semáforo 2 en rojo
+    led3_colors(0, 0, 255);  // Semáforo 3 en verde
+    Serial.println("Semáforo 3: Rojo | Semáforo 2: Rojo | Semáforo 3: Verde");
+    delay(2000);
+
+  } else {
+    Serial.println("Modo intermitente en amarillo");
+    blinkYellow();
+  }
+}
